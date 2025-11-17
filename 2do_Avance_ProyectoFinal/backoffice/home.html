@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styleH.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo"><i class='bx bxs-cube'></i> BACKOFFICE</div>
+        <nav>
+            <a href="#">Salir</a>
+        </nav>
+    </header>
+
+    <main>
+        <button id="btnAgregar" class="btn btn-primary">Agregar Proyecto</button>
+
+        <div id="formProyecto" style="display:none;">
+            <h3 id="tituloForm">Nuevo Proyecto</h3>
+            <input type="text" placeholder="Título del proyecto"><br><br>
+            <textarea placeholder="Descripción del proyecto"></textarea><br><br>
+            <input type="text" placeholder="Tecnologías (separadas por comas)"><br><br>
+            <input type="text" placeholder="Repositorio (URL)"><br><br>
+            <button class="btn btn-primary" id="btnGuardarVisual">Guardar</button>
+            <button class="btn btn-secondary" id="btnCancelarVisual">Cancelar</button>
+        </div>
+
+        <div id="panelProyectos">
+            <div class="tarjeta">
+                <h3>Mi proyecto</h3>
+                <p>Descripción del proyecto</p>
+                <p><strong>Tecnologías:</strong> JavaScript, Node.js</p>
+                <p><strong>Repositorio:</strong> <a href="#">https://github.com/...</a></p>
+                <div class="botones">
+                    <button class="btn btn-primary">Editar</button>
+                    <button class="btn btn-danger">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { protectRoute, logoutAndRedirect } from "./auth.js";
+
+        protectRoute("index.html");
+
+        document.querySelector("nav a:last-child")
+            .addEventListener("click", () => logoutAndRedirect("index.html"));
+    </script>
+
+    <script>
+        const btnAgregar = document.getElementById('btnAgregar');
+        const formProyecto = document.getElementById('formProyecto');
+        const btnCancelarVisual = document.getElementById('btnCancelarVisual');
+
+        btnAgregar.addEventListener('click', () => {
+            formProyecto.style.display = 'block';
+        });
+
+        btnCancelarVisual.addEventListener('click', () => {
+            formProyecto.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
