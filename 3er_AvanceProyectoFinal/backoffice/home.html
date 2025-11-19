@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="styleH.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo"><i class='bx bxs-cube'></i> BACKOFFICE</div>
+        <nav>
+            <a href="#">Salir</a>
+        </nav>
+    </header>
+
+    <main>
+        <button id="btnAgregar" class="btn btn-primary"><i class='bx bx-folder-plus'></i>Agregar Proyecto</button>
+
+        <div id="formProyecto" style="display:none;">
+            <h3 id="tituloForm">Nuevo Proyecto</h3>
+
+            <input type="text" id="inTitle" placeholder="Título del proyecto">
+            <span class="error-text" id="err_title">El titulo debe tener minimo 10 caracteres.</span>
+            <br><br>
+
+            <textarea id="inDesc" placeholder="Descripción del proyecto"></textarea>
+            <span class="error-text" id="err_desc">La descripcion no puede estar vacia.</span>
+            <br><br>
+
+            <input type="text" id="inTech" placeholder="Tecnologías (separadas por comas)">
+            <span class="error-text" id="err_tech">Debe incluir al menos una tecnologia.</span>
+            <br><br>
+
+            <input type="text" id="inRepo" placeholder="Repositorio (URL)">
+            <span class="error-text" id="err_repo">El repositorio debe ser una URL valida y tener minimo 10 caracteres.</span>
+            <br><br>
+
+            <button class="btn btn-primary" id="btnGuardarVisual">Guardar</button>
+            <button class="btn btn-secondary" id="btnCancelarVisual">Cancelar</button>
+        </div>
+
+        <div id="panelProyectos">
+            <div class="tarjeta">
+                <h3>Mi proyecto</h3>
+                <p>Descripcion del proyecto</p>
+                <p><strong>Tecnologias:</strong> JavaScript, Node.js</p>
+                <p><strong>Repositorio:</strong> <a href="#">https://github.com/...</a></p>
+                <div class="botones">
+                    <button class="btn btn-primary"><i class='bx bxs-edit'></i>Editar</button>
+                    <button class="btn btn-danger"><i class='bx bxs-trash'></i>Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal" id="modalConfirm">
+        <div class="modal-content">
+            <h3>Confirmar</h3>
+            <p>¿Deseas eliminar este proyecto?</p>
+            <div class="modal-buttons">
+                <button id="btnConfirmYes" class="btn btn-danger"><i class='bx bxs-trash'></i>Eliminar</button>
+                <button id="btnConfirmNo" class="btn btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+            import { protectRoute, logoutAndRedirect } from "./auth.js";
+            import { getProjects, createProject, updateProject, deleteProject, renderProjectsList } from "./projects.js";
+
+            document.addEventListener("DOMContentLoaded", () => {
+
+                protectRoute("index.html");
+                document.querySelector("nav a:last-child")
+                    .addEventListener("click", () => logoutAndRedirect("index.html"));
+
+                const btnAgregar = document.getElementById('btnAgregar');
+                const formProyecto = document.getElementById('formProyecto');
+                const btnCancelar = document.getElementById('btnCancelarVisual');
+                const btnGuardar = document.getElementById('btnGuardarVisual');
+                const panel = document.getElementById('panelProyectos');
+
+                const titleInput = document.getElementById('inTitle');
+                const descInput = document.getElementById('inDesc');
+                const techInput = document.getElementById('inTech');
+                const repoInput = document.getElementById('inRepo');
+
+                let editId = null;
+
+                btnAgregar.addEventListener('click', () => {
+                    editId = null;
+                    titleInput.value = "";
+                    descInput.value = "";
+                    techInput.value = "";
+                    repoInput.value = "";
+                    formProyecto.style.display = 'block';
+                });
+
+                btnCancelar.addEventListener('click', () => {
+                    formProyecto.style.display = 'none';
+                });
+
+                async function cargarProyectos() {
+                    try {
+                        const proyectos = await getProjects();
+                        renderProjectsList(panel, proyectos, {
+                            onEdit: handleEdit,
+                            onDelete: handleDelete
+                        });
+                    } catch (err) {
+                        console.error(err);
+                        panel.innerHTML = "<p>Error al cargar proyectos.</p>";
+                    }
+                }
+
+                cargarProyectos();
+
+                btnGuardar.addEventListener("click", async () => {
+                    function clearErrors() {
+                        document.querySelectorAll(".error-text").forEach(e => e.style.display = "none");
+                        [titleInput, descInput, techInput, repoInput].forEach(i =>
+                            i.classList.remove("input-error")
+                        );
+                    }
+
+                    clearErrors();
+
+                    let hasErrors = false;
+
+                    if (titleInput.value.trim().length < 3) {
+                        hasErrors = true;
+                        titleInput.classList.add("input-error");
+                        document.getElementById("err_title").style.display = "block";
+                    }
+
+                    if (descInput.value.trim().length === 0) {
+                        hasErrors = true;
+                        descInput.classList.add("input-error");
+                        document.getElementById("err_desc").style.display = "block";
+                    }
+
+                    const techs = techInput.value
+                        .split(",")
+                        .map(t => t.trim())
+                        .filter(t => t);
+
+                    if (techs.length === 0) {
+                        hasErrors = true;
+                        techInput.classList.add("input-error");
+                        document.getElementById("err_tech").style.display = "block";
+                    }
+
+                    const repo = repoInput.value.trim();
+                    if (repo.length < 10 || !repo.includes("http")) {
+                        hasErrors = true;
+                        repoInput.classList.add("input-error");
+                        document.getElementById("err_repo").style.display = "block";
+                    }
+
+                    if (hasErrors) return; 
+
+                    const proyecto = {
+                        title: titleInput.value.trim(),
+                        description: descInput.value.trim(),
+                        technologies: techs,
+                        repository: repo,
+                    };
+
+                    try {
+                        if (editId === null) {
+                            await createProject(proyecto);
+                        } else {
+                            await updateProject(editId, proyecto);
+                        }
+
+                        formProyecto.style.display = 'none';
+                        cargarProyectos();
+
+                    } catch (err) {
+                        console.error(err);
+                        alert("Error al guardar proyecto");
+                    }
+                });
+
+                async function handleEdit(project) {
+                    editId = project._id;
+
+                    titleInput.value = project.title;
+                    descInput.value = project.description;
+                    techInput.value = project.technologies?.join(", ") || "";
+                    repoInput.value = project.repository || "";
+
+                    formProyecto.style.display = 'block';
+                }
+
+                const modal = document.getElementById("modalConfirm");
+                const btnYes = document.getElementById("btnConfirmYes");
+                const btnNo = document.getElementById("btnConfirmNo");
+
+                function abrirModalConfirm() {
+                    return new Promise(resolve => {
+                        modal.style.display = "flex";
+
+                        btnYes.onclick = () => {
+                            modal.style.display = "none";
+                            resolve(true);
+                        };
+
+                        btnNo.onclick = () => {
+                            modal.style.display = "none";
+                            resolve(false);
+                        };
+                    });
+                }
+                
+                async function handleDelete(project) {
+                    const confirmar = await abrirModalConfirm();
+                    if (!confirmar) return;
+
+                    try {
+                        await deleteProject(project._id);
+                        cargarProyectos();
+                        showMessage("Proyecto eliminado correctamente", "success");
+                    } catch (err) {
+                        console.error(err);
+                        showMessage("Error al eliminar el proyecto", "error");
+                    }
+                }
+            }); 
+    </script>
+
+    <script>
+        function showMessage(text, type = "info") {
+            const msg = document.createElement("div");
+            msg.className = `alert ${type}`;
+            msg.textContent = text;
+
+            Object.assign(msg.style, {
+                position: "fixed",
+                top: "20px",
+                right: "20px",
+                padding: "12px 20px",
+                borderRadius: "6px",
+                fontWeight: "600",
+                zIndex: 9999,
+                color: "#fff",
+                background: type === "success"
+                    ? "#4CAF50"
+                    : type === "error"
+                    ? "#f44336"
+                    : "#333",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.3)"
+            });
+
+            document.body.appendChild(msg);
+
+            setTimeout(() => msg.remove(), 3000);
+        }
+        </script>
+
+</body>
+</html>

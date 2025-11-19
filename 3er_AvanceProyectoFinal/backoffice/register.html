@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Sixtyfour&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="styleR.css">
+    <title>Document</title>
+
+</head>
+    <body>
+        <div>
+            <section>
+            <div class="izq">
+                <img src="img/2R.gif" alt="fondo">
+            </div>
+            <div class="der">
+                <h2>REGISTRARSE</h2>
+                <form id="registerForm">
+
+                    <div class="input-box">
+                        <input id="name" type="text" required autofocus>
+                        <label>Usuario</label>
+                        <i class='bx bxs-user'></i> 
+                    </div>
+
+                    <div class="input-box">
+                        <input  id="email" type="email" required>
+                        <label>Correo Electronico</label>
+                        <i class='bx bx-envelope'></i>
+                    </div>
+
+                    <div class="input-box">
+                        <input id="itsonId" type="text" required>
+                        <label>Itson ID</label>
+                        <i class='bx bx-id-card'></i>
+                    </div>
+
+                    <div class="input-box">
+                        <input id="password" type="password" required>
+                        <label>Contraseña</label>
+                        <i class='bx bxs-lock-alt'></i> 
+                    </div>
+
+                    <button class="btn" type="submit">Sign Up</button>
+                    <div class="regi-link">
+                    <p>¿Ya tienes una cuenta? <a href="index.html">Login</a></p>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <script type="module">
+            import { registerUser } from "./auth.js";
+
+            document.getElementById("registerForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const itsonId = document.getElementById("itsonId").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            try {
+                await registerUser({ name, email, itsonId, password });
+                alert("Registro exitoso");
+                setTimeout(() => {
+                    window.location.href = "index.html";
+                }, 500);
+            } catch (err) {
+                alert(err.message || "Error al registrarse");
+            }
+            });
+        </script>
+        </div>
+    </body>
+</html>

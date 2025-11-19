@@ -1,0 +1,236 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: url('img/H2.gif') no-repeat center center/cover;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    padding: 15px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+main {
+    margin-top: 100px; 
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 25px;
+}
+
+.btn {
+    padding: 10px 16px;
+    margin: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+#btnAgregar {
+    align-self: flex-end;
+    margin-right: 10px;
+    margin-top: 50px;
+    height: 48px;
+    font-size: 18px;
+}
+
+.btn-primary { 
+    background-color: #000000; 
+    color: rgb(253, 253, 253); 
+}
+.btn-primary:hover {
+    background-color: #45a049;
+}
+.btn-secondary { 
+    background-color: #777; 
+    color: white; 
+}
+.btn-secondary:hover {
+    background-color: #555;
+}
+.btn-danger { 
+    background-color: #f44336; 
+    color: white; 
+}
+.btn-danger:hover {
+    background-color: #d32f2f;
+}
+
+
+#formProyecto {
+    display: none;
+    align-self: center;
+    margin-top: 20px;
+    background: #000000ad;
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 500px;
+}
+
+#formProyecto input,
+#formProyecto textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 5px;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+}
+
+#formProyecto h3 {
+    margin-bottom: 45px;
+    text-align: center;
+}
+
+#panelProyectos {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.tarjeta {
+    background: rgba(0,0,0,0.7);
+    padding: 15px;
+    border-radius: 10px;
+    width: 350px;
+    height: 400px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.tarjeta h3 {
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.tarjeta p {
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.tarjeta a {
+    color: #af4c9e;
+    text-decoration: underline;
+    word-break: break-word;
+}
+
+.tarjeta button {
+    margin-top: 5px;
+}
+
+.tarjeta .botones {
+    display: flex;
+    flex-direction: column; 
+    gap: 3px; 
+    margin-top: 10px; 
+}
+
+@keyframes floatTitle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.input-error {
+    border: 2px solid #e74c3c !important;
+}
+
+.error-text {
+    color: #e74c3c;
+    font-size: 13px;
+    margin-top: 4px;
+    display: none;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #00000085;
+    color: #ffffff;
+    padding: 20px;
+    width: 300px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+}
+
+.modal-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav {
+        margin-top: 10px;
+    }
+
+    .hero h1 {
+        font-size: 40px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    #panelProyectos {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #formProyecto {
+        max-width: 90%;
+    }
+}
