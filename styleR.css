@@ -1,0 +1,223 @@
+body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            background-image: url(img/imgR1.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.6);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+            width: 800px;
+            height: 500px;
+        }
+
+        .izq {
+            flex: 1;
+            display: flex;
+            margin-top: 20px;
+            margin-left: 20px;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.4);
+        }
+
+        .izq img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .der {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            font-size: 36px;
+            color: rgb(117, 117, 117);
+            text-shadow: 0 0 10px black, 0 0 20px black, 0 0 30px black;
+            animation: floatTitle 3s ease-in-out infinite;
+        }
+
+        .input-box{
+            position: relative;
+            width: 100%;
+            height: 50px;
+            margin-top: 25px;
+        }
+
+        .input-box input{
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            border-bottom: 2px solid #fff;
+            padding-right: 23px;
+            transition: .5s;
+        }
+
+        .input-box input:focus,
+        .input-box input:valid{
+            border-bottom: 2px solid black;
+        }
+
+        .input-box label{
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #fff;
+            transition: .5s;
+        }
+
+        .input-box input:focus ~ label,
+        .input-box input:valid ~ label{
+            top: -5px;
+            color: black;
+        }
+
+        .input-box i{
+            position: absolute;
+            top: 50%;
+            right: 0;
+            font-size: 18px;
+            transform: translateY(-50%);
+            transition: .5s;
+        }
+
+        .input-box input:focus ~ i,
+        .input-box input:valid ~ i{
+            color: black;
+        }
+
+
+        button {
+            width: 150px;
+            padding: 12px;
+            background: #050505;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        button:hover {
+            background: #686868;
+        }
+
+        p {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        p a {
+            color: #280561;
+            text-decoration: none;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes floatTitle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+        }
+
+        button {
+            align-self: center; 
+        }
+
+        .regi-link {
+            text-align: center; 
+            width: 100%;
+        }
+
+        @media (max-width: 750px){
+            body {
+                flex-direction: column;
+                height: auto;
+                padding: 20px;
+                background-position: center;
+            }
+
+            section {
+                flex-direction: column;
+                width: 100%;
+                height: auto;
+                padding: 20px;
+                border-radius: 10px;
+            }
+
+            .izq {
+                width: 100%;
+                margin: 0;
+                background: transparent;
+            }
+
+            .izq img {
+                width: 50%;
+                height: auto;
+                border-radius: 10px;
+            }
+
+            .der {
+                width: 100%;
+                padding: 20px 10px;
+            }
+
+            h2 {
+                font-size: 28px;
+                text-align: center;
+            }
+
+            .input-box {
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            p {
+                font-size: 13px;
+                text-align: center;
+            }
+        }
